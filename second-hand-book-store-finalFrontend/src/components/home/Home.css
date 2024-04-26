@@ -1,0 +1,6 @@
+.slider-item
+{
+    background-image:url('../../assets/images/ecom-home.jpg');
+    height:100vh;
+    object-fit:contain;
+}

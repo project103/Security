@@ -1,0 +1,8 @@
+.signup-section
+{
+    padding-bottom: 10px;
+}
+
+.notValid{
+    border: 1px solid red !important;
+}

@@ -1,0 +1,38 @@
+.main-product 
+{
+    padding: 5px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 3px 4px 10px 0px rgb(175 132 132 / 30%);
+    margin: 10px;
+    min-width: 250px;
+    transition: transform 250ms;
+}
+
+.main-product:hover
+{
+    transform: translateY(10px);
+}
+
+@media (max-width: 720px) {
+    .main-product {
+        justify-content: center;
+        align-items: center;
+        margin: 0px;
+        margin-left: 10px;
+        width: 300px !important;
+    }
+
+  }
+
+@media (max-width: 854px) {
+    .main-product {
+        justify-content: center;
+        align-items: center;
+        margin: 0px;
+        margin-left: 10px;
+        width: 300px !important;
+    }
+
+  }
+
