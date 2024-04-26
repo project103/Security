@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 
 library.add(faShoppingCart);
 
-const API_URL = 'http://localhost:8080/api/v1/cart/';
+const API_URL = 'http://localhost:9090/api/v1/cart/';
 
 const ProductCard = ({product}) => {
     const {setCart} = useContext(CartContext);

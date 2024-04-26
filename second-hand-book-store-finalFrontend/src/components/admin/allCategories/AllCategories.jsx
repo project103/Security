@@ -11,7 +11,7 @@ import { faTrash,faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faTrash,faPenToSquare);
 
-const API_URL = "http://localhost:8080/api/v1/";
+const API_URL = "http://localhost:9090/api/v1/";
 
 const AllCategories = ({getCategories}) => {
 

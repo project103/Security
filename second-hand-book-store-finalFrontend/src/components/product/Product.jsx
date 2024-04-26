@@ -7,7 +7,7 @@ import { LoginContext } from '../context/LoginContext';
 import { CartContext } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 
-const API_URL = 'http://localhost:8080/api/v1/';
+const API_URL = 'http://localhost:9090/api/v1/';
 const Product = () => {
     const {user} = useContext(LoginContext);
     const {setCart} = useContext(CartContext);

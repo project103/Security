@@ -5,7 +5,7 @@ import axios from 'axios';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
-const API_URL = 'http://localhost:8080/api/v1/';
+const API_URL = 'http://localhost:9090/api/v1/';
 
 const Category = ({ category }) => {
     const { setProducts } = useContext(ProductContext);

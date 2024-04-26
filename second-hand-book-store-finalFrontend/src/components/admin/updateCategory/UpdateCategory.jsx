@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router';
 import { faRunning } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-const API_URL = "http://localhost:8080/api/v1/";
+const API_URL = "http://localhost:9090/api/v1/";
 
 const UpdateCategory = () => {
 

@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'; 
 import { useNavigate } from 'react-router';
 
-const API_URL = "http://localhost:8080/api/v1/";
+const API_URL = "http://localhost:9090/api/v1/";
 
 const AddProduct = () => 
 {

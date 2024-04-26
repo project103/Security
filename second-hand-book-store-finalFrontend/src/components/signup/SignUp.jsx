@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const API_URL = "http://localhost:8080/api/v1/user/"
+const API_URL = "http://localhost:9090/api/v1/user/"
 const SignUp = () => {
   const [userDetails, setUserDetails] = useState({
     name: '',

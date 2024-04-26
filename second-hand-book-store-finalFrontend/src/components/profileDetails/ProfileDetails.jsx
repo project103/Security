@@ -5,7 +5,7 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import './ProfileDetails.css';
 
-const API_URL = 'http://localhost:8080/api/v1/user/'
+const API_URL = 'http://localhost:9090/api/v1/user/'
 const ProfileDetails = () => {
     const [updatedUser,setUpdatedUser] = useState({});
     const [emailValid,setEmailValid] = useState(true);
