@@ -36,6 +36,7 @@ public class UserController {
 	}
 	
 	
+	
 	@GetMapping(path="/email/{email}")
 	public User getUserByEmail(@PathVariable String email) {
 		logger.info("get The User of email :" + email);

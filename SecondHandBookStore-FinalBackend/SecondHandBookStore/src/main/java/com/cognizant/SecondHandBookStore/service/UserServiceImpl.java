@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.cognizant.SecondHandBookStore.service.encryptdecryptService;
 import com.cognizant.SecondHandBookStore.entity.Cart;
 import com.cognizant.SecondHandBookStore.entity.User;
 import com.cognizant.SecondHandBookStore.exception.UserNotFoundException;
@@ -14,6 +14,7 @@ import com.cognizant.SecondHandBookStore.responseAndRequest.UserRequest;
 
 @Service
 public class UserServiceImpl implements UserService{
+
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService{
 		logger.info("Get the user by id :" + id);
 		return user;
 	}
+
+	
 	
 	@Override
 	public User getUserByEmail(String email) {
@@ -56,6 +59,17 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User createUser(User user) {
+		encryptdecryptService encryptdecryptService = new encryptdecryptService();
+		String encrytpedname = encryptdecryptService.encryptMessage(user.getName());
+		String encryptedemail = encryptdecryptService.encryptMessage(user.getEmail());
+		String encryptedphone = encryptdecryptService.encryptMessage(user.getPhoneNo());
+		String encryptedaddress = encryptdecryptService.encryptMessage(user.getAddress());
+
+		user.setPhoneNo(encryptedphone);
+        user.setEmail(encryptedemail);
+        user.setName(encrytpedname);
+        user.setAddress(encryptedaddress);
+
 		User createUser = userRepository.save(user);
 		Cart createCart = new Cart();
 		createCart.setUser(createUser);
