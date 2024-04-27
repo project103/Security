@@ -14,6 +14,7 @@ const SignIn = () => {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
 
+
     const MySwal = withReactContent(Swal);
     const navigate = useNavigate();
 
@@ -22,12 +23,15 @@ const SignIn = () => {
         try{
           const response = await axios.post(API_URL + 'sign-in',{email,password},{
             headers:{
-              'Content-Type':'application/json'
+              'Content-Type':'application/json',
+
             }
           });
           if(response.status === 200){
             localStorage.setItem('user-details',JSON.stringify(response.data));
+            localStorage.setItem("token",JSON.stringify(response.data.token));
             setUser(response.data);
+
             MySwal.fire({
               icon:'success',
               title:'Success',

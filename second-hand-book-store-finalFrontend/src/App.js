@@ -17,7 +17,6 @@ const App = () => {
   }, []);
 
   return (
-    <>
       <Router>
         <LoginContext.Provider value={{ user, setUser }}>
           {user !== null ? (
@@ -32,7 +31,6 @@ const App = () => {
           )}
         </LoginContext.Provider>
       </Router>
-    </>
   )
 }
 

@@ -7,19 +7,32 @@ import ProdImg from '../../assets/books/c-book.jpg';
 import { CartContext } from '../context/CartContext';
 import { LoginContext } from '../context/LoginContext';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const API_URL = "http://localhost:9090/api/v1/cart/";
 
 const Cart = () => {
     const {cart,setCart} = useContext(CartContext);
     const {user} = useContext(LoginContext);
-
+    const navigate = useNavigate();
     const MySwal = withReactContent(Swal);
 
     const DecreaseQuantity = async (productId) =>{
         try{
-             const response = await axios.put(API_URL + `descrease-quantity/${productId}/${user.id}`);
+             const response = await axios.put(API_URL + `descrease-quantity/${productId}/${user.id}` ,
+                 {
+                     headers:{
+                         'Authorization': `Bearer ${localStorage.getItem("token")}`
+                     }
+                 });
              if(response.status === 200){
+                 if (response.data.tokenCheck === "unknown"){
+                     localStorage.removeItem('user-details');
+                     localStorage.removeItem('token');
+                     navigate('../signin/signin.jsx');
+                 }
                 setCart(response.data);
              }
         } catch(err){
@@ -36,6 +49,10 @@ const Cart = () => {
         try{
              const response = await axios.put(API_URL + `increase-quantity/${productId}/${user.id}`);
              if(response.status === 200){
+                 if (response.data.tokenCheck === "unknown"){
+                     navigate('../signin/signin.jsx');
+                 }
+
                 setCart(response.data);
              }
         } catch(err){
@@ -53,6 +70,9 @@ const Cart = () => {
         try{
             const response = await axios.delete(API_URL + `remove-book/${productId}/${user.id}`);
             if(response.status === 200){
+                if (response.data.tokenCheck === "unknown"){
+                    navigate('../signin/signin.jsx');
+                }
                 setCart(response.data);
             }
        } catch(err){

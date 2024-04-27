@@ -4,6 +4,8 @@ import axios from 'axios';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import './ProfileDetails.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const API_URL = 'http://localhost:9090/api/v1/user/'
 const ProfileDetails = () => {
@@ -11,6 +13,7 @@ const ProfileDetails = () => {
     const [emailValid,setEmailValid] = useState(true);
     const {user,setUser} = useContext(LoginContext);
     const MySwal = withReactContent(Swal);
+    const navigate = useNavigate();
 
     useEffect(() =>{
         if(user){
@@ -19,6 +22,7 @@ const ProfileDetails = () => {
     },[user]);
 
     const handleChange = (e) =>{
+
         setUpdatedUser((prevProp) => ({...prevProp,[e.target.name]:e.target.value}));
         if(e.target.name === 'email'){
             if (e.target.value === "") {
@@ -34,12 +38,15 @@ const ProfileDetails = () => {
     }
 
     const handleSubmit = async (e) =>{
+
         e.preventDefault();
+
         try{
             if(emailValid){
                 const response = await axios.put(API_URL + 'update/' + user.id,updatedUser,{
                     headers:{
-                        'Content-Type':'application/json'
+                        'Content-Type':'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem("token")}`
                     }
                 });
                 if(response.status === 200){

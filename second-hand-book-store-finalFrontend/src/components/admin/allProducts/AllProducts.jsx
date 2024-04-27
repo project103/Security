@@ -15,7 +15,12 @@ const AllProducts = ({getAllProducts}) => {
     const deleteProduct = async (id) => {
         try {
             const response = await axios.delete(API_URL + 'book/delete/' + id);
-            if (response.status === 200) {
+            if(response.status === 200){
+                 if (response.data.tokenCheck === "unknown"){
+                     localStorage.removeItem('user-details');
+                     localStorage.removeItem('token');
+                     navigate('../signin/signin.jsx');
+                 }
                 setProducts(products.filter((prod) => prod.id !== id));
                 MySwal.fire({
                     icon: 'success',

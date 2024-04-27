@@ -11,6 +11,7 @@ const Dashboard = () => {
 
     const signOut = () => {
         localStorage.removeItem('user-details');
+        localStorage.removeItem('token');
         setUser({});
         MySwal.fire({
           icon: 'success',
