@@ -12,6 +12,10 @@ import com.cognizant.SecondHandBookStore.repository.CartRepository;
 import com.cognizant.SecondHandBookStore.repository.UserRepository;
 import com.cognizant.SecondHandBookStore.responseAndRequest.UserRequest;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -59,7 +63,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User createUser(User user) {
-
 		User createUser = userRepository.save(user);
 		Cart createCart = new Cart();
 		createCart.setUser(createUser);
@@ -106,5 +109,21 @@ public class UserServiceImpl implements UserService{
 		logger.info("User is Deleted!");
 		return String.format("User %d is Deleted!", id);
 	}
+
+	private static final String SECRET_KEY = "YourSecretKey123"; // Change this to your secret key
+
+	public  String encrypt(String address) {
+		try {
+			SecretKeySpec secretKeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+			Cipher cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+			byte[] encryptedBytes = cipher.doFinal(address.getBytes());
+			return Base64.getEncoder().encodeToString(encryptedBytes);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 
 }

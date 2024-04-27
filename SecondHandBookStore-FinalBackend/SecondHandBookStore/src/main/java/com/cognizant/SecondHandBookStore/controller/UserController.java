@@ -19,6 +19,10 @@ import com.cognizant.SecondHandBookStore.service.UserService;
 
 import jakarta.validation.Valid;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+
 @RestController
 @RequestMapping(path = "/api/v1/user/")
 @CrossOrigin
@@ -42,19 +46,26 @@ public class UserController {
 		logger.info("get The User of email :" + email);
 		return userService.getUserByEmail(email);
 	}
-	
-	
+
 	@PostMapping(path ="/sign-in")
 	public User getUserByEmailAndPassword(@RequestBody UserRequest userRequest){
+		userRequest.setEmail(userRequest.getEmail());
 		logger.info("get The User of email and password");
 		return userService.getUserByEmailAndPassword(userRequest);
-		
 	}
-	
-	
+
+
 	@PostMapping(path = "/sign-up")
 	public User createUser(@Valid @RequestBody User user){
 		logger.info("create the new user");
+		String encryptedAddress = userService.encrypt(user.getAddress());
+		String encryptedName = userService.encrypt(user.getName());
+		String encryptedEmail = userService.encrypt(user.getEmail());
+
+		user.setName(encryptedName);
+		user.setEmail(encryptedEmail);
+		user.setAddress(encryptedAddress);
+
 		return userService.createUser(user);
 	}
 	
