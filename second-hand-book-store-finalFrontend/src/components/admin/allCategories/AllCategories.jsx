@@ -25,11 +25,11 @@ const AllCategories = ({getCategories}) => {
     const deleteCategory = async (id) => {
         const response = await axios.delete(API_URL + 'book-category/delete/' + id);
         if(response.status === 200){
-                 if (response.data.tokenCheck === "unknown"){
-                     localStorage.removeItem('user-details');
-                     localStorage.removeItem('token');
-                     navigate('../signin/signin.jsx');
-                 }
+            if (response.data.tokenCheck === "unknown"){
+                localStorage.removeItem('user-details');
+                localStorage.removeItem('token');
+                navigate('../signin/signin.jsx');
+            }
             setCategories(categories.filter((cate) => cate.id !== id));
             MySwal.fire({
                 icon: 'success',
@@ -59,21 +59,21 @@ const AllCategories = ({getCategories}) => {
                             <h5 className="card-title">All Categories</h5>
                             <div className="container row">
                                 { categories.length !== 0 && (
-                                        categories.map(category => {
-                                            return (
-                                                <div key={category.id} className="card mx-1" style={{width: '17rem'}}>
-                                                    <div className="card-body">
-                                                        <h5 className="card-title">{category.name}</h5>
-                                                        <Link
+                                    categories.map(category => {
+                                        return (
+                                            <div key={category.id} className="card mx-1" style={{width: '17rem'}}>
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{category.name}</h5>
+                                                    <Link
                                                         style={{marginRight:'10px'}}
-                                                         to={"/update-category/" + category.id} className="btn btn-main text-white">
-                                                            <FontAwesomeIcon icon={faPenToSquare} /> update</Link>
-                                                        <button className="btn btn-dark" onClick={() => deleteCategory(category.id)}>
+                                                        to={"/update-category/" + category.id} className="btn btn-main text-white">
+                                                        <FontAwesomeIcon icon={faPenToSquare} /> update</Link>
+                                                    <button className="btn btn-dark" onClick={() => deleteCategory(category.id)}>
                                                         <FontAwesomeIcon icon={faTrash} /> Delete</button>
-                                                    </div>
-                                                </div>)
-                                        })
-                                    )}
+                                                </div>
+                                            </div>)
+                                    })
+                                )}
                             </div>
                         </div>
                     </div>

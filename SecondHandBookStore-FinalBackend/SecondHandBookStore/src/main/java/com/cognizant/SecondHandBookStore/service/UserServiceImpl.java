@@ -59,16 +59,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User createUser(User user) {
-		encryptdecryptService encryptdecryptService = new encryptdecryptService();
-		String encrytpedname = encryptdecryptService.encryptMessage(user.getName());
-		String encryptedemail = encryptdecryptService.encryptMessage(user.getEmail());
-		String encryptedphone = encryptdecryptService.encryptMessage(user.getPhoneNo());
-		String encryptedaddress = encryptdecryptService.encryptMessage(user.getAddress());
-
-		user.setPhoneNo(encryptedphone);
-        user.setEmail(encryptedemail);
-        user.setName(encrytpedname);
-        user.setAddress(encryptedaddress);
 
 		User createUser = userRepository.save(user);
 		Cart createCart = new Cart();
