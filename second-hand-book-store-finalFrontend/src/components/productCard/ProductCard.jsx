@@ -11,6 +11,8 @@ import { useContext } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 library.add(faShoppingCart);
 
@@ -21,6 +23,7 @@ const ProductCard = ({product}) => {
     const {user} = useContext(LoginContext);
     const MySwal = withReactContent(Swal);
     const productDiscount = ((((product.price - product.sellPrice)/product.price))*100).toFixed(2);
+    const navigate = useNavigate();
 
     const addToCart = async (productId) =>{
         try{
@@ -30,11 +33,18 @@ const ProductCard = ({product}) => {
                 quantity:1
             },{
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+
                 }
             });
-    
+
             if(response.status === 200){
+                if (response.data.tokenCheck === "unknown"){
+                    localStorage.removeItem('user-details');
+                    localStorage.removeItem('token');
+                    navigate('../signin/signin.jsx');
+                }
                 setCart(response.data);
                 MySwal.fire({
                     icon:'success',

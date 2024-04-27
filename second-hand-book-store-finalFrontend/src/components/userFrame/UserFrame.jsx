@@ -13,6 +13,8 @@ import axios from 'axios';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import Product from '../product/Product';
+import { useNavigate } from 'react-router-dom';
+
 
 const API_URL = "http://localhost:9090/api/v1/";
 
@@ -22,10 +24,19 @@ const UserFrame = () => {
   const [categories,setCategories] = useState();
   const [cart,setCart] = useState({});
   const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
 
   const getCart = async (e) =>{
-    const response = await axios.get(API_URL + 'cart/user-id/'+ user.id);
-    if(response.status === 200){
+    const response = await axios.get(API_URL + 'cart/user-id/'+ user.id ,
+        { headers :{
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }});
+      if(response.status === 200){
+          if (response.data.tokenCheck === "unknown"){
+              localStorage.removeItem('user-details');
+              localStorage.removeItem('token');
+              navigate('../signin/signin.jsx');
+          }
       setCart(response.data);
     }else{
         MySwal.fire({

@@ -7,19 +7,30 @@ import axios from 'axios';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import './Products.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const API_URL = 'http://localhost:9090/api/v1/';
 
 const Products = () => {
     const { products, setProducts } = useContext(ProductContext);
     const { categories, setCategories } = useContext(CategoryContext);
+    const navigate = useNavigate();
 
     const MySwal = withReactContent(Swal);
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(API_URL + 'book-categories');
-            if (response.status === 200) {
+            const response = await axios.get(API_URL + 'book-categories',
+                { headers:{
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }});
+            if(response.status === 200){
+                 if (response.data.tokenCheck === "unknown"){
+                     localStorage.removeItem('user-details');
+                     localStorage.removeItem('token');
+                     navigate('../signin/signin.jsx');
+                 }
                 setCategories(response.data);
             }
         } catch (err) {
@@ -33,7 +44,12 @@ const Products = () => {
 
     const getAllProducts = async () => {
         const response = await axios.get(API_URL + 'books');
-        if (response.status == 200) {
+        if(response.status === 200){
+            if (response.data.tokenCheck === "unknown"){
+                localStorage.removeItem('user-details');
+                localStorage.removeItem('token');
+                navigate('../signin/signin.jsx');
+            }
             setProducts(response.data);
         }
         else {

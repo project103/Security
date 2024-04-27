@@ -6,6 +6,8 @@ import axios from 'axios';
 import { LoginContext } from '../context/LoginContext';
 import { CartContext } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const API_URL = 'http://localhost:9090/api/v1/';
 const Product = () => {
@@ -14,12 +16,22 @@ const Product = () => {
     const [product, setProduct] = useState({});
     const [quantity,setQuantity] = useState(1);
     const { id } = useParams();
+    const navigate = useNavigate();
+
     const MySwal = withReactContent(Swal);
 
     const getProduct = async () => {
         try {
-            const response = await axios.get(API_URL + 'book/' + id);
-            if (response.status === 200) {
+            const response = await axios.get(API_URL + 'book/' + id , {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }});
+            if(response.status === 200){
+                 if (response.data.tokenCheck === "unknown"){
+                     localStorage.removeItem('user-details');
+                     localStorage.removeItem('token');
+                     navigate('../signin/signin.jsx');
+                 }
                 setProduct(response.data);
             }
 

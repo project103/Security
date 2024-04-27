@@ -24,7 +24,12 @@ const AllCategories = ({getCategories}) => {
 
     const deleteCategory = async (id) => {
         const response = await axios.delete(API_URL + 'book-category/delete/' + id);
-        if (response.status === 200) {
+        if(response.status === 200){
+                 if (response.data.tokenCheck === "unknown"){
+                     localStorage.removeItem('user-details');
+                     localStorage.removeItem('token');
+                     navigate('../signin/signin.jsx');
+                 }
             setCategories(categories.filter((cate) => cate.id !== id));
             MySwal.fire({
                 icon: 'success',
