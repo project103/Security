@@ -16,6 +16,8 @@ import com.cognizant.SecondHandBookStore.entity.User;
 import com.cognizant.SecondHandBookStore.responseAndRequest.UserRequest;
 import com.cognizant.SecondHandBookStore.service.UserService;
 
+import java.security.NoSuchAlgorithmException;
+
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class TestUserController {
@@ -93,7 +95,7 @@ public class TestUserController {
 	}
 	
 	@Test
-	public void testCreateUser() {
+	public void testCreateUser() throws NoSuchAlgorithmException {
 		User expectedUser = User.builder()
 				.id(1L)
 				.name("Aditya Chandrikapure")

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.cognizant.SecondHandBookStore.service.HashedService;
 
 import com.cognizant.SecondHandBookStore.entity.User;
 import com.cognizant.SecondHandBookStore.responseAndRequest.UserRequest;
@@ -22,6 +23,7 @@ import jakarta.validation.Valid;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 @RestController
@@ -33,6 +35,9 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private encryptdecryptService cryptocraphy ;
+	private HashedService hashedService;
+
+
 	Logger logger = LoggerFactory.getLogger(UserController.class);
 	private UserServiceImpl userServiceImpl;
 
@@ -59,17 +64,19 @@ public class UserController {
 
 
 	@PostMapping(path = "/sign-up")
-	public User createUser(@Valid @RequestBody User user){
+	public User createUser(@Valid @RequestBody User user) throws NoSuchAlgorithmException {
 		logger.info("create the new user");
 
 		String encryptedAddress = cryptocraphy.encrypt(user.getAddress());
 		String encryptedName = cryptocraphy.encrypt(user.getName());
 		String encryptedEmail = cryptocraphy.encrypt(user.getEmail());
 
+		byte salte[]= HashedService.createSalt();
+		String passwordhashed = HashedService.generateHash(user.getPassword(),"md5",salte );
 		user.setName(encryptedName);
 		user.setEmail(encryptedEmail);
 		user.setAddress(encryptedAddress);
-
+		user.setPassword(passwordhashed);
 		return userService.createUser(user);
 	}
 	
