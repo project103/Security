@@ -110,20 +110,5 @@ public class UserServiceImpl implements UserService{
 		return String.format("User %d is Deleted!", id);
 	}
 
-	private static final String SECRET_KEY = "YourSecretKey123"; // Change this to your secret key
-
-	public  String encrypt(String address) {
-		try {
-			SecretKeySpec secretKeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
-			Cipher cipher = Cipher.getInstance("AES");
-			cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-			byte[] encryptedBytes = cipher.doFinal(address.getBytes());
-			return Base64.getEncoder().encodeToString(encryptedBytes);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 
 }

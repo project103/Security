@@ -9,51 +9,38 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.stereotype.Service;
 @Service
 public class encryptdecryptService {
-    public Map<String, Object> map = new HashMap<>();
 
-    public void createKeys() {
-      try {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(4096);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        PublicKey publicKey = keyPair.getPublic();
-        PrivateKey privateKey = keyPair.getPrivate();
-        map.put("publicKey", publicKey);
-        map.put("privateKey", privateKey);
-  
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+    private static final String SECRET_KEY = "YourSecretKey123"; // Change this to your secret key
+
+    public  String encrypt(String address) {
+        try {
+            SecretKeySpec secretKeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            byte[] encryptedBytes = cipher.doFinal(address.getBytes());
+            return Base64.getEncoder().encodeToString(encryptedBytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-  
-    public String encryptMessage(String plainText) {
-  
-      try {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
-        PublicKey publicKey = (PublicKey) map.get("publicKey");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] encrypt = cipher.doFinal(plainText.getBytes());
-        return new String(Base64.getEncoder().encodeToString(encrypt));
-      } catch (Exception e) {
-  
-      }
-      return "";
+    public  String decrypt(String encryptedAddress, String SECRET_KEY) {
+        try {
+            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedAddress);
+            SecretKeySpec secretKeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            return new String(decryptedBytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-  
-    public String decryptMessage(String encryptedMessgae) {
-  
-      try {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
-        PrivateKey privateKey = (PrivateKey) map.get("privateKey");
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decrypt = cipher.doFinal(Base64.getDecoder().decode(encryptedMessgae));
-        return new String(decrypt);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      return "";
-    }
-  }
+
+}

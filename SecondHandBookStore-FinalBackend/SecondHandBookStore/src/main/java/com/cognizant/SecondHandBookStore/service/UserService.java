@@ -18,7 +18,7 @@ public interface UserService {
 	User updateUser(Long id,User user);
 	
 	String deleteUser(Long id);
-	String encrypt(String address);
+
 	//String decrypt(String address);
 
 }

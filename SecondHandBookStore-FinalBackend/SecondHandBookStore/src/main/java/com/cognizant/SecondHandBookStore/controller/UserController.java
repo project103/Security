@@ -1,5 +1,6 @@
 package com.cognizant.SecondHandBookStore.controller;
 
+import com.cognizant.SecondHandBookStore.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cognizant.SecondHandBookStore.entity.User;
 import com.cognizant.SecondHandBookStore.responseAndRequest.UserRequest;
 import com.cognizant.SecondHandBookStore.service.UserService;
-
+import com.cognizant.SecondHandBookStore.service.encryptdecryptService;
 import jakarta.validation.Valid;
 
 import javax.crypto.Cipher;
@@ -30,9 +31,11 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
+	@Autowired
+	private encryptdecryptService cryptocraphy ;
 	Logger logger = LoggerFactory.getLogger(UserController.class);
-	
+	private UserServiceImpl userServiceImpl;
+
 	@GetMapping(path = "/{id}")
 	public User getUser(@PathVariable Long id) {
 		logger.info("get The User of Id :" + id);
@@ -58,9 +61,10 @@ public class UserController {
 	@PostMapping(path = "/sign-up")
 	public User createUser(@Valid @RequestBody User user){
 		logger.info("create the new user");
-		String encryptedAddress = userService.encrypt(user.getAddress());
-		String encryptedName = userService.encrypt(user.getName());
-		String encryptedEmail = userService.encrypt(user.getEmail());
+
+		String encryptedAddress = cryptocraphy.encrypt(user.getAddress());
+		String encryptedName = cryptocraphy.encrypt(user.getName());
+		String encryptedEmail = cryptocraphy.encrypt(user.getEmail());
 
 		user.setName(encryptedName);
 		user.setEmail(encryptedEmail);
@@ -73,6 +77,7 @@ public class UserController {
 	@PutMapping(path = "/update/{id}")
 	public User updateUser(@PathVariable Long id,@Valid @RequestBody User user) {
 		logger.info("update the existing user");
+
 		return userService.updateUser(id, user);
 	}
 	
