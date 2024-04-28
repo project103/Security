@@ -22,9 +22,9 @@ public class SecondHandBookStoreApplication {
 		String encry1 = Service.encrypt(test);
 		System.out.println("encrypted data :- "+encry1);
 		String decry = Service.decrypt(encry1,"YourSecretKey123");
-		System.out.println("decrypted data :- "+decry);
-		byte salte[]= HashedService.createSalt();
-		String passwordhashed = HashedService.generateHash(test,"md5",salte );
+		System.out.println("decrypted data :-  "+decry);
+
+		String passwordhashed = HashedService.generateHash(test,"md5" );
 		System.out.println("hashed data :- "+passwordhashed);
 
     }

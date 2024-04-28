@@ -70,7 +70,7 @@ public class TestUserController {
 	}
 	
 	@Test
-	public void testGetUserByEmailAndPassword() {
+	public void testGetUserByEmailAndPassword() throws NoSuchAlgorithmException {
 		UserRequest userRequest = UserRequest.builder()
 					.email("aditya@gmail.com")
 					.password("Aditya@123")

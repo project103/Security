@@ -34,7 +34,7 @@ public class User {
 	    @Column(nullable = false)
 	    private String name;
 	    
-	    @Size(max = 12)
+
 	    private String phoneNo;
 
 	    @Column(nullable = false, unique = true)

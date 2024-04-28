@@ -56,10 +56,18 @@ public class UserController {
 	}
 
 	@PostMapping(path ="/sign-in")
-	public User getUserByEmailAndPassword(@RequestBody UserRequest userRequest){
-		userRequest.setEmail(userRequest.getEmail());
+	public User getUserByEmailAndPassword(@RequestBody UserRequest userRequest) throws NoSuchAlgorithmException {
+		userRequest.setEmail( cryptocraphy.encrypt(userRequest.getEmail()));
+		String passwordhashed = HashedService.generateHash(userRequest.getPassword(),"md5" );
+		userRequest.setPassword( passwordhashed);
+
+		// {test : for encryption and hashed}
+//		System.out.println("password hashed is :- "+passwordhashed);
+//		System.out.println("email hashed is :- "+  userRequest.getEmail());
+
 		logger.info("get The User of email and password");
 		return userService.getUserByEmailAndPassword(userRequest);
+
 	}
 
 
@@ -70,13 +78,14 @@ public class UserController {
 		String encryptedAddress = cryptocraphy.encrypt(user.getAddress());
 		String encryptedName = cryptocraphy.encrypt(user.getName());
 		String encryptedEmail = cryptocraphy.encrypt(user.getEmail());
-
-		byte salte[]= HashedService.createSalt();
-		String passwordhashed = HashedService.generateHash(user.getPassword(),"md5",salte );
+		String encryptedphoneno = cryptocraphy.encrypt(user.getPhoneNo());
+		String passwordhashed = HashedService.generateHash(user.getPassword(),"md5" );
 		user.setName(encryptedName);
 		user.setEmail(encryptedEmail);
 		user.setAddress(encryptedAddress);
 		user.setPassword(passwordhashed);
+		user.setPhoneNo(encryptedphoneno);
+
 		return userService.createUser(user);
 	}
 	

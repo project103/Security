@@ -7,6 +7,7 @@
     <list default="true" id="ec8c7589-9a93-4b55-bab4-adec113779ad" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/SecondHandBookStoreApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/SecondHandBookStoreApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/entity/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/service/HashedService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/main/java/com/cognizant/SecondHandBookStore/service/HashedService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/test/java/com/cognizant/SecondHandBookStore/TestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SecondHandBookStore-FinalBackend/SecondHandBookStore/src/test/java/com/cognizant/SecondHandBookStore/TestUserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -61,7 +62,9 @@
       <workItem from="1714231706340" duration="6773000" />
       <workItem from="1714249225716" duration="1709000" />
       <workItem from="1714290322247" duration="590000" />
-      <workItem from="1714297046602" duration="1716000" />
+      <workItem from="1714297046602" duration="2177000" />
+      <workItem from="1714333110674" duration="1101000" />
+      <workItem from="1714337037196" duration="1362000" />
     </task>
     <servers />
   </component>
