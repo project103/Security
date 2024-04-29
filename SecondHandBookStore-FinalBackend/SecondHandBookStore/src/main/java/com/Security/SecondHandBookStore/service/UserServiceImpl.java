@@ -1,21 +1,24 @@
-package com.Security.SecondHandBookStore.service;
+package com.cognizant.SecondHandBookStore.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.cognizant.SecondHandBookStore.service.encryptdecryptService;
+import com.cognizant.SecondHandBookStore.entity.Cart;
+import com.cognizant.SecondHandBookStore.entity.User;
+import com.cognizant.SecondHandBookStore.exception.UserNotFoundException;
+import com.cognizant.SecondHandBookStore.repository.CartRepository;
+import com.cognizant.SecondHandBookStore.repository.UserRepository;
+import com.cognizant.SecondHandBookStore.responseAndRequest.UserRequest;
 
-import com.Security.SecondHandBookStore.entity.Cart;
-import com.Security.SecondHandBookStore.entity.User;
-import com.Security.SecondHandBookStore.exception.UserNotFoundException;
-import com.Security.SecondHandBookStore.repository.CartRepository;
-import com.Security.SecondHandBookStore.repository.UserRepository;
-import com.Security.SecondHandBookStore.responseAndRequest.UserRequest;
-
-import java.util.Optional;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 @Service
 public class UserServiceImpl implements UserService{
+
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -33,6 +36,8 @@ public class UserServiceImpl implements UserService{
 		logger.info("Get the user by id :" + id);
 		return user;
 	}
+
+	
 	
 	@Override
 	public User getUserByEmail(String email) {
@@ -104,5 +109,6 @@ public class UserServiceImpl implements UserService{
 		logger.info("User is Deleted!");
 		return String.format("User %d is Deleted!", id);
 	}
+
 
 }

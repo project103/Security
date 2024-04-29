@@ -12,9 +12,13 @@ public interface UserService {
 	User getUserByEmailAndPassword(UserRequest userDAO);
 	
 	User createUser(User user);
+
+	
 	
 	User updateUser(Long id,User user);
 	
 	String deleteUser(Long id);
+
+	//String decrypt(String address);
 
 }
