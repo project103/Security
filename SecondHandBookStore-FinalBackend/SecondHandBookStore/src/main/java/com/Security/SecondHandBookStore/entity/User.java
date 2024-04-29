@@ -53,5 +53,8 @@ public class User {
 	    @JsonIgnore
 	    @OneToOne(optional = true,mappedBy = "user")
 	    private Cart cart;
+
+		private String Token;
+
 		
 }

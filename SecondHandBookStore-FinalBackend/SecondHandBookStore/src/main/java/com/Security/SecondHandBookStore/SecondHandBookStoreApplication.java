@@ -3,8 +3,8 @@ package com.Security.SecondHandBookStore;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.cognizant.SecondHandBookStore.service.encryptdecryptService;
-import com.cognizant.SecondHandBookStore.service.HashedService;
+import com.Security.SecondHandBookStore.service.encryptdecryptService;
+import com.Security.SecondHandBookStore.service.HashedService;
 
 import java.security.NoSuchAlgorithmException;
 

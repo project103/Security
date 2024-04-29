@@ -1,9 +1,12 @@
-package com.cognizant.SecondHandBookStore;
+package com.Security.SecondHandBookStore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.Security.SecondHandBookStore.entity.User;
+import com.Security.SecondHandBookStore.responseAndRequest.UserRequest;
+import com.Security.SecondHandBookStore.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,10 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.cognizant.SecondHandBookStore.controller.UserController;
-import com.cognizant.SecondHandBookStore.entity.User;
-import com.cognizant.SecondHandBookStore.responseAndRequest.UserRequest;
-import com.cognizant.SecondHandBookStore.service.UserService;
+import com.Security.SecondHandBookStore.controller.UserController;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -68,31 +68,7 @@ public class TestUserController {
 		
 		assertEquals(expectedUser, responseProduct);
 	}
-	
-	@Test
-	public void testGetUserByEmailAndPassword() throws NoSuchAlgorithmException {
-		UserRequest userRequest = UserRequest.builder()
-					.email("aditya@gmail.com")
-					.password("Aditya@123")
-					.build();
-		
-		User expectedUser = User.builder()
-				.id(1L)
-				.name("Aditya Chandrikapure")
-				.email("aditya@gmail.com")
-				.phoneNo("1234567891")
-				.address("Gondia, Maharashtra")
-				.password("Aditya@123")
-				.build();
-		
-		when(userService.getUserByEmailAndPassword(userRequest)).thenReturn(expectedUser);
-		
-		User responseProduct = userController.getUserByEmailAndPassword(userRequest);
-		
-		assertEquals(expectedUser, responseProduct);
-		
-		
-	}
+
 	
 	@Test
 	public void testCreateUser() throws NoSuchAlgorithmException {
@@ -119,7 +95,6 @@ public class TestUserController {
 		
 		assertEquals(expectedUser, responseProduct);
 	}
-	
 	
 	@Test
 	public void testUpdateUser() {
