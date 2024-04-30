@@ -1,6 +1,5 @@
 package com.Security.SecondHandBookStore.filter;
 
-
 import com.Security.SecondHandBookStore.service.JwtService;
 import com.Security.SecondHandBookStore.service.UserDetailsServiceImp;
 import jakarta.servlet.FilterChain;
@@ -22,7 +21,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsServiceImp userDetailsService;
-
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsServiceImp userDetailsService) {
         this.jwtService = jwtService;
@@ -50,21 +48,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+            // Remove the check for token validity
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities()
+            );
 
-            if(jwtService.isValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
+
         filterChain.doFilter(request, response);
-
-
     }
 }

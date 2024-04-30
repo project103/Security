@@ -1,38 +1,56 @@
 package com.Security.SecondHandBookStore.service;
 
 import com.Security.SecondHandBookStore.entity.User;
+import com.Security.SecondHandBookStore.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+
 @Service
 public class JwtService {
-
-    private static final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
+    @Autowired
+    private UserRepository userRepository;
     private static final long TOKEN_VALIDITY = 24 * 60 * 60 * 1000; // 24 hours
+    
+    private   SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+
 
     public boolean isValid(String token, UserDetails user) {
-        String username = extractUsername(token);
-        return (username.equals(user.getUsername())) && !isTokenExpired(token);
+        new User();
+        User user1 = userRepository.findByEmail(user.getUsername());
+        String usernameToken = user1.getToken();
+        return (usernameToken.equals(token) && !isTokenExpired(token));
     }
+    
 
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    public String generateToken(User user) {
+        // Generate a secure key for HMAC-SHA256 algorithm
+        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+        String token = Jwts.builder()
+                .setSubject(user.getEmail())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
+                .signWith(key) // Sign the token with the key
+                .compact();
+
+        user.setToken(token);
+        userRepository.save(user);
+        return token;
     }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
@@ -41,24 +59,15 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parser()
-                .setSigningKey(getSigningKey())
-                .parseClaimsJws(token)
-                .getBody();
+        SecretKey key = Keys.hmacShaKeyFor(Key.getBytes());
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public String generateToken(User user) {
-        return Jwts.builder()
-                .setSubject(user.getEmail())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
-                .signWith(getSigningKey())
-                .compact();
-    }
+    // Other methods...
+}
 
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
+
+
+
+
 }
