@@ -29,7 +29,23 @@ const AddCategory = () =>
         e.preventDefault();
         try{
             const response = await axios.post(API_URL+'book-category/create',categoryDetail);
+            // if(response.status === 200){
+
+                // console.log(response.data);
+                // setCategories((prevState) => ([...prevState,response.data]));
+                // mySwal.fire({
+                //     icon: 'success',
+                //     title: 'Success',
+                //     text:"Category is created!",
+                // })
+                // navigate('/all-categories');
+            // }
             if(response.status === 200){
+                if (response.data.tokenCheck === "unknown"){
+                    localStorage.removeItem('user-details');
+                    localStorage.removeItem('token');
+                    navigate('../signin/signin.jsx');
+                }
                 console.log(response.data);
                 setCategories((prevState) => ([...prevState,response.data]));
                 mySwal.fire({
@@ -39,7 +55,9 @@ const AddCategory = () =>
                 })
                 navigate('/all-categories');
             }
-        } catch(err){
+        }
+        
+        catch(err){
             mySwal.fire({
                 icon: 'error',
                 title: 'Oops...',

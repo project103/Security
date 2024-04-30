@@ -25,10 +25,18 @@ const AdminDashboard = () =>
 
     const getCategories = async () =>{
         const response = await axios.get(API_URL + 'book-categories');
+        // if(response.status === 200){
+        //     setCategories(response.data);
+        // }
         if(response.status === 200){
-            setCategories(response.data);
-        }
-        else{
+            if (response.data.tokenCheck === "unknown"){
+                localStorage.removeItem('user-details');
+                localStorage.removeItem('token');
+                navigate('../signin/signin.jsx');
+            }
+              setCategories(response.data);
+
+        }else{
             MySwal.fire({
                 icon: 'error',
                 title: 'Oops...',

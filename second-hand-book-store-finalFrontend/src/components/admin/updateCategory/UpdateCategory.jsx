@@ -42,7 +42,21 @@ const UpdateCategory = () => {
                     "Content-Type":"application/json"
                 }
             });
+            // // if(response.status === 200){
+            //     mySwal.fire({
+            //         icon:'success',
+            //         title: 'Success',
+            //         text: 'Category updated Successfully',
+            //         timer:2000
+            //     });
+            //     navigate('/all-categories');
+            // // }
             if(response.status === 200){
+                if (response.data.tokenCheck === "unknown"){
+                    localStorage.removeItem('user-details');
+                    localStorage.removeItem('token');
+                    navigate('../signin/signin.jsx');
+                }
                 mySwal.fire({
                     icon:'success',
                     title: 'Success',
@@ -50,7 +64,7 @@ const UpdateCategory = () => {
                     timer:2000
                 });
                 navigate('/all-categories');
-            }
+           }
         } catch(err){
             mySwal.fire({
                 icon:'error',

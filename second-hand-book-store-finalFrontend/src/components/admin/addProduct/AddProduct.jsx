@@ -39,7 +39,22 @@ const AddProduct = () =>
     e.preventDefault();
     try{
       const response = await axios.post(API_URL + 'book/create',productDetails);
+      // if(response.status === 200){
+        
+      //   setProducts((prevProducts)=> ([...prevProducts,response.data]));
+      //   MySwal.fire({
+      //     icon:'success',
+      //     title:'Success',
+      //     text: "Product is Created!",
+      //   });
+      //   navigate('/');
+      // }
       if(response.status === 200){
+        if (response.data.tokenCheck === "unknown"){
+            localStorage.removeItem('user-details');
+            localStorage.removeItem('token');
+            navigate('../signin/signin.jsx');
+        }
         setProducts((prevProducts)=> ([...prevProducts,response.data]));
         MySwal.fire({
           icon:'success',
@@ -47,7 +62,10 @@ const AddProduct = () =>
           text: "Product is Created!",
         });
         navigate('/');
-      }
+    }
+    
+    
+    
     } catch(err){
       MySwal.fire({
         icon:'error',

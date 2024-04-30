@@ -66,7 +66,21 @@ const UpdateProduct = () =>
           }
         });
         console.log(response);
+        // if(response.status === 200){
+        //   MySwal.fire({
+        //     icon:'success',
+        //     title:'Success',
+        //     text:"Product Updated Successfully",
+        //     timer:2000
+        //   });
+        //   navigate('/');
+        // }
         if(response.status === 200){
+          if (response.data.tokenCheck === "unknown"){
+              localStorage.removeItem('user-details');
+              localStorage.removeItem('token');
+              navigate('../signin/signin.jsx');
+          }
           MySwal.fire({
             icon:'success',
             title:'Success',
@@ -74,8 +88,10 @@ const UpdateProduct = () =>
             timer:2000
           });
           navigate('/');
-        }
-      } catch(err){
+      }
+      } 
+      
+      catch(err){
         MySwal.fire({
           icon:'error',
           title:'Error',

@@ -49,8 +49,24 @@ const ProfileDetails = () => {
                         'Authorization': `Bearer ${localStorage.getItem("token")}`
                     }
                 });
+                // if(response.status === 200){
+                //     setUser(response.data);
+                //     localStorage.removeItem('user-details');
+                //     localStorage.setItem('user-details',JSON.stringify(response.data));
+                //     MySwal.fire({
+                //         icon:'success',
+                //         title:'User Updated!',
+                //         text:'User is Updated!',
+                //         timer:3000
+                //     })
+                // }
                 if(response.status === 200){
-                    setUser(response.data);
+                    if (response.data.tokenCheck === "unknown"){
+                        localStorage.removeItem('user-details');
+                        localStorage.removeItem('token');
+                        navigate('../signin/signin.jsx');
+                    }
+                     setUser(response.data);
                     localStorage.removeItem('user-details');
                     localStorage.setItem('user-details',JSON.stringify(response.data));
                     MySwal.fire({
