@@ -13,7 +13,6 @@ import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-
 library.add(faShoppingCart);
 
 const API_URL = 'http://localhost:9090/api/v1/cart/';

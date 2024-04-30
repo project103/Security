@@ -6,8 +6,6 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-
-
 const API_URL = 'http://localhost:9090/api/v1/';
 
 const Category = ({ category }) => {
@@ -16,22 +14,39 @@ const Category = ({ category }) => {
     const navigate = useNavigate();
 
     const changeByCategory = async (categoryId) => {
-        const response = await axios.get(API_URL + 'books-by-category-id/' + categoryId);
-        if(response.status === 200){
-                 if (response.data.tokenCheck === "unknown"){
-                     localStorage.removeItem('user-details');
-                     localStorage.removeItem('token');
-                     navigate('../signin/signin.jsx');
-                 }
-            setProducts(response.data);
-        } else {
+        try {
+            const authToken = localStorage.getItem('token'); // Assuming you're storing the token in local storage
+
+            const headers = {
+                Authorization: `Bearer ${authToken}`,
+            };
+
+            const response = await axios.get(API_URL + 'books-by-category-id/' + categoryId, { headers });
+            
+            if (response.status === 200) {
+                if (response.data.tokenCheck === "unknown") {
+                    localStorage.removeItem('user-details');
+                    localStorage.removeItem('token');
+                    navigate('../signin/signin.jsx');
+                }
+                setProducts(response.data);
+            } else {
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "Something went wrong!"
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching books by category:', error);
             MySwal.fire({
                 icon: 'error',
-                title: 'Opps...',
-                text: "Something went's Wrong!"
+                title: 'Oops...',
+                text: "Something went wrong!"
             });
         }
-    }
+    };
+
     return (
         <div className='col container mb-2' onClick={() => changeByCategory(category.id)}>
             <div className="col justify-content-center align-items-center">
@@ -44,7 +59,8 @@ const Category = ({ category }) => {
                     </div>
                 </div>
             </div>
-        </div>)
-}
+        </div>
+    );
+};
 
 export default Category;

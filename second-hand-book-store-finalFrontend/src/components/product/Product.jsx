@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -8,77 +8,82 @@ import { CartContext } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-
 const API_URL = 'http://localhost:9090/api/v1/';
+
 const Product = () => {
-    const {user} = useContext(LoginContext);
-    const {setCart} = useContext(CartContext);
+    const { user } = useContext(LoginContext);
+    const { setCart } = useContext(CartContext);
     const [product, setProduct] = useState({});
-    const [quantity,setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(1);
     const { id } = useParams();
     const navigate = useNavigate();
-
     const MySwal = withReactContent(Swal);
 
     const getProduct = async () => {
         try {
-            const response = await axios.get(API_URL + 'book/' + id , {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`
-                }});
-            if(response.status === 200){
-                 if (response.data.tokenCheck === "unknown"){
-                     localStorage.removeItem('user-details');
-                     localStorage.removeItem('token');
-                     navigate('../signin/signin.jsx');
-                 }
+            const authToken = localStorage.getItem('token'); // Assuming you're storing the token in local storage
+
+            const headers = {
+                Authorization: `Bearer ${authToken}`,
+            };
+
+            const response = await axios.get(API_URL + 'book/' + id, { headers });
+            if (response.status === 200) {
+                if (response.data.tokenCheck === 'unknown') {
+                    localStorage.removeItem('user-details');
+                    localStorage.removeItem('token');
+                    navigate('../signin/signin.jsx');
+                }
                 setProduct(response.data);
             }
-
         } catch (err) {
             MySwal.fire({
-                icon:'error',
+                icon: 'error',
                 title: "Something Went's Wrong!",
-                timer: 2000
-            })
+                timer: 2000,
+            });
         }
-    }
+    };
 
     useEffect(() => {
         getProduct();
     }, []);
 
-
-    const addToCart = async (productId,totalQuantity) =>{
-        try{
-            const response = await axios.post(API_URL + 'cart/add-to-cart',{
-                userId:user.id,
-                productId:productId,
-                quantity:totalQuantity
-            },{
-                headers:{
-                    'Content-Type':'application/json'
+    const addToCart = async (productId, totalQuantity) => {
+        try {
+            const response = await axios.post(
+                API_URL + 'cart/add-to-cart',
+                {
+                    userId: user.id,
+                    productId: productId,
+                    quantity: totalQuantity,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
                 }
-            });
+            );
             console.log(response);
-            if(response.status === 200){
+            if (response.status === 200) {
                 setCart(response.data);
                 MySwal.fire({
-                    icon:'success',
-                    title:'Success',
-                    text:'Book is added to Cart successfully'
-                })
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Book is added to Cart successfully',
+                });
             }
-        } catch(err){
+        } catch (err) {
             console.log(err);
             MySwal.fire({
-                icon:'error',
-                title:'Opps...',
-                text:err.response.data.message,
-                timer:2000
-            })
+                icon: 'error',
+                title: 'Opps...',
+                text: err.response.data.message,
+                timer: 2000,
+            });
         }
-    }
+    };
 
     return (
         <section className="single-product">
@@ -92,7 +97,6 @@ const Product = () => {
                                         <img src={product && product.image} alt="" className="img-fluid" />
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -106,11 +110,11 @@ const Product = () => {
                             <hr></hr>
 
                             <h3 className="product-price">
-                                <del style={{color:'#fb5c42'}}>Rs. {product && product.price}.00</del> &nbsp; Rs. {product && product.sellPrice}.00
+                                <del style={{ color: '#fb5c42' }}>Rs. {product && product.price}.00</del> &nbsp; Rs. {product && product.sellPrice}.00
                             </h3>
 
                             <div className="sku_wrapper mb-4">
-                                Discount : <span className="text-muted">{product && ((((product.price - product.sellPrice)/product.price))*100).toFixed(2)}%</span>
+                                Discount : <span className="text-muted">{product && ((((product.price - product.sellPrice) / product.price)) * 100).toFixed(2)}%</span>
                             </div>
                             <div className="sku_wrapper mb-4">
                                 Stocks: <span className="text-muted"> <strong>{product && product.stock}</strong> items left</span>
@@ -134,7 +138,7 @@ const Product = () => {
                                         value={quantity}
                                         onChange={(e) => setQuantity(e.target.value)}
                                         title="Qty" />
-                                    <button onClick={() => addToCart(product.id,quantity)} className="btn btn-main">Add to cart</button>
+                                    <button onClick={() => addToCart(product.id, quantity)} className="btn btn-main">Add to cart</button>
                                 </div>
                             </div>
                         </div>
@@ -144,8 +148,8 @@ const Product = () => {
                     </div>
                 </div>
             </div>
-        </section>)
-
+        </section>
+    )
 }
 
-export default Product
+export default Product;

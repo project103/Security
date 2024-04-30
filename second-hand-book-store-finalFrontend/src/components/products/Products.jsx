@@ -9,57 +9,65 @@ import Swal from 'sweetalert2';
 import './Products.css';
 import { useNavigate } from 'react-router-dom';
 
-
 const API_URL = 'http://localhost:9090/api/v1/';
 
 const Products = () => {
     const { products, setProducts } = useContext(ProductContext);
     const { categories, setCategories } = useContext(CategoryContext);
     const navigate = useNavigate();
-
     const MySwal = withReactContent(Swal);
+
+    const headers = {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+    };
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(API_URL + 'book-categories',
-                { headers:{
-                'Authorization': `Bearer ${localStorage.getItem("token")}`
-            }});
-            if(response.status === 200){
-                 if (response.data.tokenCheck === "unknown"){
-                     localStorage.removeItem('user-details');
-                     localStorage.removeItem('token');
-                     navigate('../signin/signin.jsx');
-                 }
+            const response = await axios.get(API_URL + 'book-categories', {headers});
+            if (response.status === 200) {
+                if (response.data.tokenCheck === "unknown") {
+                    localStorage.removeItem('user-details');
+                    localStorage.removeItem('token');
+                    navigate('../signin/signin.jsx');
+                }
                 setCategories(response.data);
             }
         } catch (err) {
+            console.error(err);
             MySwal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: "Something went's Worng!",
+                text: "Something went wrong!"
             });
         }
-    }
+    };
 
     const getAllProducts = async () => {
-        const response = await axios.get(API_URL + 'books');
-        if(response.status === 200){
-            if (response.data.tokenCheck === "unknown"){
-                localStorage.removeItem('user-details');
-                localStorage.removeItem('token');
-                navigate('../signin/signin.jsx');
+        try {
+            const response = await axios.get(API_URL + 'books', {headers});
+            if (response.status === 200) {
+                if (response.data.tokenCheck === "unknown") {
+                    localStorage.removeItem('user-details');
+                    localStorage.removeItem('token');
+                    navigate('../signin/signin.jsx');
+                }
+                setProducts(response.data);
+            } else {
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "Something went wrong!"
+                });
             }
-            setProducts(response.data);
-        }
-        else {
+        } catch (err) {
+            console.error(err);
             MySwal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: "Something went wrong's",
-            })
+                text: "Something went wrong!"
+            });
         }
-    }
+    };
 
     useEffect(() => {
         getAllProducts();
@@ -72,7 +80,6 @@ const Products = () => {
                 <div className="row">
                     <div className="col-12 col-md-3 col-lg-3">
                         <section className="widget widget-sizes mb-2">
-
                             <div className="accordion">
                                 <div className="accordion-item">
                                     <h2 className="accordion-header">
@@ -117,14 +124,13 @@ const Products = () => {
                             {products && products.map((product) => (
                                 <ProductCard key={product.id} product={product} />
                             ))}
-                            {products.length === 0 && (<h2 className='text-center my-3' style={{color:'#dd4b39'}}>Product Not Found!</h2>)}
+                            {products.length === 0 && (<h2 className='text-center my-3' style={{ color: '#dd4b39' }}>Product Not Found!</h2>)}
                         </div>
                     </div>
                 </div>
             </div>
-        </section>)
-}
+        </section>
+    );
+};
 
 export default Products;
-
-
