@@ -18,10 +18,16 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private UserRepository userRepository;
-	private JwtService jwtService;
+
 	private encryptdecryptService cryptocraphy ;
 	@Autowired
 	private CartRepository cartRepository;
+	private final JwtService jwtService;
+
+	@Autowired
+	public UserServiceImpl(JwtService jwtService) {
+		this.jwtService = jwtService;
+	}
 	
 	Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -107,6 +113,7 @@ public class UserServiceImpl implements UserService{
 		logger.info("User is Deleted!");
 		return String.format("User %d is Deleted!", id);
 	}
+
 
 
 }
