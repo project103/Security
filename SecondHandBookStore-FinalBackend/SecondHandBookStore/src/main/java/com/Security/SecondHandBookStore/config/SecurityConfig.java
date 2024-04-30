@@ -42,16 +42,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req->req.requestMatchers("/api/v1/user/sign-up","/api/v1/user/sign-in")
                                 .permitAll()
-                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
-                                .anyRequest()
-                                .authenticated()
+
                 ).userDetailsService(userDetailsService)
                 .sessionManagement(session->session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(
                         e->e.accessDeniedHandler(
-                                        (request, response, accessDeniedException)->response.setStatus(403)
+                                        (request, response, accessDeniedException)->response.setStatus(401)
                                 )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .logout(l->l
