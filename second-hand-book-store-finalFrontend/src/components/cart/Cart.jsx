@@ -28,7 +28,7 @@ const Cart = () => {
                 if (response.data.tokenCheck === "unknown") {
                     localStorage.removeItem('user-details');
                     localStorage.removeItem('token');
-                    navigate('../signin.jsx');
+                    navigate('../signin');
                 }
                 setCart(response.data);
             }

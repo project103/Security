@@ -38,14 +38,33 @@ public class UserController {
 
 	@GetMapping(path = "/{id}")
 	public User getUser(@PathVariable Long id) {
-		return userService.getUser(id);
+		User user = userService.getUser(id);
+		String encryptedAddress = cryptocraphy.decrypt(user.getAddress(),"YourSecretKey123");
+		String encryptedName = cryptocraphy.decrypt(user.getName(),"YourSecretKey123");
+		String encryptedEmail = cryptocraphy.decrypt(user.getEmail(),"YourSecretKey123");
+		String encryptedphoneno = cryptocraphy.decrypt(user.getPhoneNo(),"YourSecretKey123");
+		user.setName(encryptedName);
+		user.setEmail(encryptedEmail);
+		user.setAddress(encryptedAddress);
+		user.setPhoneNo(encryptedphoneno);
+		return user;
 	}
 	
 	
 	
 	@GetMapping(path="/email/{email}")
 	public User getUserByEmail(@PathVariable String email) {
-		return userService.getUserByEmail(email);
+	User user =userService.getUserByEmail(email);
+		String encryptedAddress = cryptocraphy.decrypt(user.getAddress(),"YourSecretKey123");
+		String encryptedName = cryptocraphy.decrypt(user.getName(),"YourSecretKey123");
+		String encryptedEmail = cryptocraphy.decrypt(user.getEmail(),"YourSecretKey123");
+		String encryptedphoneno = cryptocraphy.decrypt(user.getPhoneNo(),"YourSecretKey123");
+		user.setName(encryptedName);
+		user.setEmail(encryptedEmail);
+		user.setAddress(encryptedAddress);
+		user.setPhoneNo(encryptedphoneno);
+		return user;
+
 	}
 	@PostMapping(path ="/sign-in")
 	public User getUserByEmailAndPassword(@RequestBody UserRequest userRequest) throws NoSuchAlgorithmException {
@@ -58,13 +77,23 @@ public class UserController {
 //		System.out.println("password hashed is :- "+passwordhashed);
 //		System.out.println("email hashed is :- "+  userRequest.getEmail());
 		//System.out.println(Token);
-		return userService.getUserByEmailAndPassword(userRequest );
+
+		User user =  userService.getUserByEmailAndPassword(userRequest );
+		String encryptedAddress = cryptocraphy.decrypt(user.getAddress(),"YourSecretKey123");
+		String encryptedName = cryptocraphy.decrypt(user.getName(),"YourSecretKey123");
+		String encryptedEmail = cryptocraphy.decrypt(user.getEmail(),"YourSecretKey123");
+		String encryptedphoneno = cryptocraphy.decrypt(user.getPhoneNo(),"YourSecretKey123");
+		user.setName(encryptedName);
+		user.setEmail(encryptedEmail);
+		user.setAddress(encryptedAddress);
+		user.setPhoneNo(encryptedphoneno);
+		return user;
 
 	}
 
 
 	@PostMapping(path = "/sign-up")
-	public User createUser(@Valid @RequestBody User user) throws NoSuchAlgorithmException {
+	public User createUser(@RequestBody User user) throws NoSuchAlgorithmException {
 
 		String encryptedAddress = cryptocraphy.encrypt(user.getAddress());
 		String encryptedName = cryptocraphy.encrypt(user.getName());
@@ -83,7 +112,14 @@ public class UserController {
 	
 	@PutMapping(path = "/update/{id}")
 	public User updateUser(@PathVariable Long id,@Valid @RequestBody User user) {
-
+		String encryptedAddress = cryptocraphy.decrypt(user.getAddress(),"YourSecretKey123");
+		String encryptedName = cryptocraphy.decrypt(user.getName(),"YourSecretKey123");
+		String encryptedEmail = cryptocraphy.decrypt(user.getEmail(),"YourSecretKey123");
+		String encryptedphoneno = cryptocraphy.decrypt(user.getPhoneNo(),"YourSecretKey123");
+		user.setName(encryptedName);
+		user.setEmail(encryptedEmail);
+		user.setAddress(encryptedAddress);
+		user.setPhoneNo(encryptedphoneno);
 		return userService.updateUser(id, user);
 	}
 	

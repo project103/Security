@@ -17,9 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,66 +27,37 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
-	
-	 	@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	    private Long id;
+public class User {
 
-	    @Column(nullable = false)
-	    private String name;
-	    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Long id;
 
-	    private String phoneNo;
-
-	    @Column(nullable = false, unique = true)
-	    private String email;
-
-	    @JsonInclude(JsonInclude.Include.NON_NULL)
-	    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	    private String password;
-	    
-	    private String address;
-	    
-	    @Builder.Default
-	    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	    private String role = "USER";
-	    
-	    @JsonIgnore
-	    @OneToOne(optional = true,mappedBy = "user")
-	    private Cart cart;
-
-		private String Token;
+	@Column(nullable = false)
+	private String name;
 
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role));
-	}
+	private String phoneNo;
 
-	@Override
-	public String getUsername() {
-		return name;
-	}
+	@Column(nullable = false, unique = true)
+	private String email;
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String password;
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+	private String address;
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+	@Builder.Default
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private String role = "USER";
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+	@JsonIgnore
+	@OneToOne(optional = true, mappedBy = "user")
+	private Cart cart;
+
+	private String Token;
+
+
 }

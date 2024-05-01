@@ -29,6 +29,7 @@ const SignIn = () => {
           });
           if(response.status === 200){
             localStorage.setItem('user-details',JSON.stringify(response.data));
+            localStorage.setItem('userId',JSON.stringify(response.data.id));
             localStorage.setItem("token",JSON.stringify(response.data.token));
             setUser(response.data);
 

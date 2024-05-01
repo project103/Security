@@ -25,6 +25,8 @@ public class ProductRequest {
 
     private int stock;
     
-    private Long categoryId;	
+    private Long categoryId;
+
+    private String tokenCheck;
 
 }

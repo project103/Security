@@ -18,6 +18,7 @@ const AdminHeader = () => {
 
     const signOut = (e) => {
         localStorage.removeItem('user-details');
+        localStorage.removeItem('token');
         setUser({});
         MySwal.fire({
             icon: 'success',

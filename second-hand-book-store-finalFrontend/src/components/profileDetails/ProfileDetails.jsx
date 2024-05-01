@@ -46,7 +46,8 @@ const ProfileDetails = () => {
                 const response = await axios.put(API_URL + 'update/' + user.id,updatedUser,{
                     headers:{
                         'Content-Type':'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`
+                                            'Authorization': `${localStorage.getItem("token")}`
+
                     }
                 });
                 // if(response.status === 200){

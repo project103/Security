@@ -50,6 +50,8 @@ public class Product {
     
     @ManyToOne(optional = false)
     private Category category;
+
+    private String tokenCheck;
     
 
 }

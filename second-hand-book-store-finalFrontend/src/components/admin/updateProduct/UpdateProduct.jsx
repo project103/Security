@@ -59,10 +59,13 @@ const UpdateProduct = () =>
     const handleSubmit = async (e) =>{
       e.preventDefault();
       console.log('update Product : ',product);
+     const userId = localStorage.getItem('userId');
       try{
-        const response = await axios.put(API_URL + 'book/update/'+id,product,{
+        const response = await axios.put(API_URL + 'book/update/'+id+'/'+userId,product,{
           headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization': `${localStorage.getItem("token")}`
+
           }
         });
         console.log(response);
